@@ -24,3 +24,4 @@ setup(
 
 # python setup.py sdist bdist_wheel
 # twine upload dist/*
+# pip install MinimalLLMAgent --upgrade
