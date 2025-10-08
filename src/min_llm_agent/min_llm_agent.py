@@ -74,16 +74,20 @@ class min_llm_agent_class:
         return messages
 
     # @lyprint_elapsed_time
-    def vanilla_query(self, messages: List[dict]):
+    def vanilla_query(self, messages: List[dict], **kwargs):
         assert isinstance(messages, list) and all(
             isinstance(item, dict) for item in messages
         ), f"Invalid input: {messages}\nAvailable types: {list[dict]}"
 
-        output_full = self.client.chat.completions.create(
-            model=self.model_name,
-            messages=messages,
-            n=1,  # Generate 1 answer.
-        )
+        try:
+            output_full = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=messages,
+                **kwargs,
+            )
+        except Exception as e:
+            raise e
+        
         output_text = output_full.choices[0].message.content
 
         return output_text
@@ -105,8 +109,8 @@ class min_llm_agent_class:
     def set_memory(self, memory: List[dict]):
         self.memory = memory
 
-    def append_memory(self, memory: List[dict]):
-        self.memory = self.memory + memory
+    def append_memory(self, memory_new: dict):
+        self.memory.append(memory_new)
 
     def print_memory(self, memory_item_separator: str = None):
         lyprint_separator("=")
@@ -123,7 +127,7 @@ class min_llm_agent_class:
             overwrite_stdout(1)
         lyprint_separator("=")
 
-    def __call__(self, messages_raw: Union[str, List[dict]], role: str = "user", with_memory: bool = True):
+    def __call__(self, messages_raw: Union[str, List[dict]], role: str = "user", with_memory: bool = True, **kwargs):
 
         messages = self.messages_preprocess(messages_raw, role)
 
@@ -131,7 +135,7 @@ class min_llm_agent_class:
             self.memory = self.memory + messages
             messages = self.memory
 
-        answer = self.vanilla_query(messages)
+        answer = self.vanilla_query(messages, **kwargs)
 
         if with_memory:
             self.add_anwer_to_memory(answer)

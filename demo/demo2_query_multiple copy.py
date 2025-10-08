@@ -16,7 +16,11 @@ if __name__ == "__main__":
         },
         {
             "role": "user",
-            "content": "What is the capital of France?",
+            "content": "1+1=?",
+        },
+        {
+            "role": "user",
+            "content": "1+2=?",
         }
     ]
     response = llm_agent(messages)
@@ -24,5 +28,4 @@ if __name__ == "__main__":
     print(f"Messages: {messages}")
     print(f"Answer by model {llm_agent.model_name}: {response}")
     
-    # llm_agent.print_memory(memory_item_separator="/")
     llm_agent.print_memory()
