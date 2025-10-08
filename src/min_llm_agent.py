@@ -1,8 +1,7 @@
-from openai import OpenAI
 import os
-from LyPythonToolbox import lyprint_separator, overwrite_stdout, lyprint_elapsed_time, lyprint_flash
-import sys
 from typing import Union, List
+from openai import OpenAI
+from LyPythonToolbox import lyprint_separator, overwrite_stdout
 
 
 supported_platform_name_list = ["OpenAI", "Grok", "DeepSeek", "Gemini", "Ali"]
