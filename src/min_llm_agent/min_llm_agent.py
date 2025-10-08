@@ -28,7 +28,10 @@ INTERACTIVE_HELP_STR = """
 - Query 'q' or 'Q' to exit.
 - Query 'm' or 'M' to print the memory.
 
-See more details on: https://github.com/YueLin301/min_llm_agent
+See more details on: 
+- Homepage: https://github.com/YueLin301/min_llm_agent
+- GitHub Page: https://github.com/YueLin301/min_llm_agent
+- PyPI Page: https://pypi.org/project/MinimalLLMAgent/
 """
 
 

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name                          = "MinimalLLMAgent",                              # 包名
-    version                       = "0.1.0",                                        # 版本号
+    version                       = "0.1.1",                                        # 版本号
     author                        = "Yue Lin",                                      # 作者名字
     author_email                  = "linyue3h1@gmail.com",                          # 作者邮箱
     description                   = "A minimal LLM agent with memory management.",                # 简短描述
