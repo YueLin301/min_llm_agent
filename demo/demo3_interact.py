@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from src.min_llm_agent import min_llm_agent_class
+from src.min_llm_agent.min_llm_agent import min_llm_agent_class
 
 if __name__ == "__main__":
 
