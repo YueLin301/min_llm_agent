@@ -400,5 +400,4 @@ export DASHSCOPE_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
     - [Models and pricing](https://help.aliyun.com/zh/model-studio/models)
     - [API Guides](https://help.aliyun.com/zh/model-studio/get-api-key?scm=20140722.H_2712195._.OR_help-T_cn~zh-V_1)
     - [A query example](https://help.aliyun.com/zh/model-studio/use-qwen-by-calling-api)
-    - [A query example](https://help.aliyun.com/zh/model-studio/use-qwen-by-calling-api)
     - [Dashboard](https://bailian.console.aliyun.com/?tab=model#/efm/model_experience_center/text)
