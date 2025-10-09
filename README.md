@@ -12,7 +12,8 @@ pip install MinimalLLMAgent
 Features:
 - simple and unified
 - memory management
-- a terminal simulation that allows for web-style interaction
+- a GUI/terminal simulation that allows for web-style interaction
+    - to bypass the access limits for advanced models on the web version
 
 
 Models & Pricing:
@@ -35,93 +36,156 @@ print_accessible_models("OpenAI", id_only=True)
 
 ## Examples
 
-See the `demo` folder.
+See `demo.py`.
+
+```python
+from min_llm_agent import (
+    min_llm_agent_class,
+    init_client,
+    print_all_supported_platforms,
+    print_all_supported_accessible_models,
+    print_accessible_models,
+)
+
+# default parameters: model_name="gpt-4o-mini"
+llm_agent = min_llm_agent_class()
+```
 
 ### 1: String Input
 
 ```python
-from min_llm_agent import min_llm_agent_class
+question = "What is the capital of France?"
+response = llm_agent(question)
 
-if __name__ == "__main__":
-
-    llm_agent = min_llm_agent_class(platform_name="OpenAI", model_name="gpt-4o-mini")
-
-    question = "What is the capital of France?"
-    response = llm_agent(question)
-
-    print(f"Question: {question}")
-    print(f"Answer by model {llm_agent.model_name}: {response}")
-    
-    # llm_agent.print_memory(memory_item_separator="/")
-    llm_agent.print_memory()
+print(f"Model: {llm_agent.model_name}\nQuestion: {question}\nAnswer: {response}")
+llm_agent.print_memory()
 ```
 
 ```
+Model: gpt-4o-mini
 Question: What is the capital of France?
-Answer by model gpt-4o-mini: The capital of France is Paris.
-======================================
+Answer: The capital of France is Paris.
+===========================================================
 Memory:
---------------------------------------
+-----------------------------------------------------------
 [0] (user): What is the capital of France?
 [1] (assistant): The capital of France is Paris.
-======================================
+===========================================================
 ```
 
-
-### 2: Dict Input
 
 ```python
-from min_llm_agent import min_llm_agent_class
+question = "What is the capital of France?"
+response = llm_agent(question, with_memory=False)
+llm_agent.print_memory()
+```
 
-if __name__ == "__main__":
 
-    llm_agent = min_llm_agent_class(platform_name="OpenAI", model_name="gpt-4o-mini")
+### 2: Dict Input and Keywords
 
-    messages = [
-        {
-            "role": "system",
-            "content": "You are a helpful assistant.",
-        },
-        {
-            "role": "user",
-            "content": "1+1=?",
-        },
-        {
-            "role": "user",
-            "content": "1+2=?",
-        }
-    ]
-    response = llm_agent(messages)
+```python
+messages = [
+    {
+        "role": "system",
+        "content": "You are a helpful assistant.",
+    },
+    {
+        "role": "user",
+        "content": "1+1=?",
+    },
+    {
+        "role": "user",
+        "content": "1+2=?",
+    },
+]
+response = llm_agent(messages)
 
-    print(f"Messages: {messages}")
-    print(f"Answer by model {llm_agent.model_name}: {response}")
-    
-    llm_agent.print_memory()
+print(f"Model: {llm_agent.model_name}\nMessages: {messages}\nAnswer: {response}")
+llm_agent.print_memory()
 ```
 
 
 ```
+Model: gpt-4o-mini
 Messages: [{'role': 'system', 'content': 'You are a helpful assistant.'}, {'role': 'user', 'content': '1+1=?'}, {'role': 'user', 'content': '1+2=?'}]
-Answer by model gpt-4o-mini: 1 + 1 = 2 and 1 + 2 = 3.
-======================================
+Answer: 1 + 1 = 2.
+
+1 + 2 = 3.
+===========================================================
 Memory:
---------------------------------------
+-----------------------------------------------------------
 [0] (system): You are a helpful assistant.
 [1] (user): 1+1=?
 [2] (user): 1+2=?
-[3] (assistant): 1 + 1 = 2 and 1 + 2 = 3.
-======================================
+[3] (assistant): 1 + 1 = 2.
+
+1 + 2 = 3.
+===========================================================
 ```
+
+More keywords:
+- temperature
+- JSON output
+
+```python
+messages = [
+    {
+        "role": "system",
+        "content": "Extract the event information. Output in JSON format, including the event name, date, and participants.",
+    },
+    {
+        "role": "user",
+        "content": "Alice and Bob are going to a science fair on Friday.",
+    },
+]
+response = llm_agent(messages, response_format={"type": "json_object"}, temperature=0.5)
+```
+
+```
+Model: gpt-4o-mini
+Messages: [{'role': 'system', 'content': 'Extract the event information. Output in JSON format, including the event name, date, and participants.'}, {'role': 'user', 'content': 'Alice and Bob are going to a science fair on Friday.'}]
+Answer: {
+  "event_name": "Science Fair",
+  "date": "Friday",
+  "participants": [
+    "Alice",
+    "Bob"
+  ]
+}
+===========================================================
+Memory:
+-----------------------------------------------------------
+[0] (system): Extract the event information. Output in JSON format, including the event name, date, and participants.
+[1] (user): Alice and Bob are going to a science fair on Friday.
+[2] (assistant): {
+  "event_name": "Science Fair",
+  "date": "Friday",
+  "participants": [
+    "Alice",
+    "Bob"
+  ]
+}
+===========================================================
+```
+
+See more detailed keywords on [OpenAI API Reference](https://platform.openai.com/docs/api-reference/chat).
+
 
 ### 3: Interact
 
 ```python
-from min_llm_agent import min_llm_agent_class
+llm_agent.interact(mode="GUI")  # default
+```
 
-if __name__ == "__main__":
+<img src="/pic/memory_proof.jpg" alt="memory_proof" width="300">
 
-    llm_agent = min_llm_agent_class(platform_name="OpenAI", model_name="gpt-4o-mini")
-    llm_agent.interact()
+<img src="/pic/memory_file.jpg" alt="memory_file" width="300">
+
+
+
+
+```python
+llm_agent.interact(mode="terminal")
 ```
 
 
@@ -173,81 +237,6 @@ Memory:
 [2] Question:
 > q
 /
-```
-
-
-### 1a: Memoryless Query
-
-```python
-from min_llm_agent import min_llm_agent_class
-
-if __name__ == "__main__":
-
-    llm_agent = min_llm_agent_class(platform_name="OpenAI", model_name="gpt-4o-mini")
-
-    question = "What is the capital of France?"
-    response = llm_agent(question, with_memory=False)
-
-    print(f"Question: {question}")
-    print(f"Answer by model {llm_agent.model_name}: {response}")
-
-    llm_agent.print_memory()
-```
-
-```
-Question: What is the capital of France?
-Answer by model gpt-4o-mini: The capital of France is Paris.
-======================================
-Memory:
---------------------------------------
-======================================
-```
-
-### 2a: More Keywords
-
-- JSON mode
-- temperature
-
-See more detailed keywords on [OpenAI API Reference](https://platform.openai.com/docs/api-reference/chat).
-
-```python
-from min_llm_agent import min_llm_agent_class
-
-if __name__ == "__main__":
-
-    llm_agent = min_llm_agent_class(platform_name="OpenAI", model_name="gpt-4o-mini")
-
-    messages = [
-        {"role": "system", "content": "Extract the event information. Output in JSON format, including the event name, date, and participants."},
-        {"role": "user", "content": "Alice and Bob are going to a science fair on Friday."},
-    ]
-
-    response = llm_agent(messages, response_format={"type": "json_object"}, temperature=0.5)
-
-    print(f"Messages: {messages}")
-    print(f"Answer by model {llm_agent.model_name}: {response}")
-
-    llm_agent.print_memory()
-```
-
-```
-Messages: [{'role': 'system', 'content': 'Extract the event information. Output in JSON format, including the event name, date, and participants.'}, {'role': 'user', 'content': 'Alice and Bob are going to a science fair on Friday.'}]
-Answer by model gpt-4o-mini: {
-  "event_name": "Science Fair",
-  "date": "Friday",
-  "participants": ["Alice", "Bob"]
-}
-================================================
-Memory:
-------------------------------------------------
-[0] (system): Extract the event information. Output in JSON format, including the event name, date, and participants.
-[1] (user): Alice and Bob are going to a science fair on Friday.
-[2] (assistant): {
-  "event_name": "Science Fair",
-  "date": "Friday",
-  "participants": ["Alice", "Bob"]
-}
-================================================
 ```
 
 
@@ -333,7 +322,6 @@ Memory:
 [3] (user): 1+4=?
 ================================================
 ```
-
 
 
 ## How to Use

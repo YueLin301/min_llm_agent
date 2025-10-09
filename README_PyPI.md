@@ -1,0 +1,3 @@
+- [Homepage](https://yuelin301.github.io/posts/Minimal-LLM-Agent): https://yuelin301.github.io/posts/Minimal-LLM-Agent
+- [PyPI Page](https://pypi.org/project/MinimalLLMAgent/): https://pypi.org/project/MinimalLLMAgent/
+- [GitHub Page](https://github.com/YueLin301/min_llm_agent): https://github.com/YueLin301/min_llm_agent
