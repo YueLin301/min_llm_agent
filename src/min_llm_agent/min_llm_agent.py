@@ -48,6 +48,34 @@ def init_client(platform_name):
     return client
 
 
+def print_all_supported_platforms():
+    lyprint_separator()
+    print(f"Supported platforms: {supported_platform_name_list}")
+
+
+def print_accessible_models(platform_name, id_only=True):
+    assert platform_name in supported_platform_name_list, f"Platform {platform_name} is not supported"
+
+    lyprint_separator()
+    print(f"Available models for platform {platform_name}:")
+
+    client = init_client(platform_name)
+    check_result = client.models.list()
+
+    for model in check_result.data:
+        if id_only:
+            print(model.id)
+        else:
+            print(model)
+        # print(model)
+
+
+def print_all_supported_accessible_models(id_only=True):
+    # all api keys are needed.
+    for platform_name in supported_platform_name_list:
+        print_accessible_models(platform_name, id_only)
+
+
 class min_llm_agent_class:
     def __init__(self, platform_name: str, model_name: str, name: str = "Yue's minimal LLM agent"):
         self.platform_name = platform_name
@@ -87,7 +115,7 @@ class min_llm_agent_class:
             )
         except Exception as e:
             raise e
-        
+
         output_text = output_full.choices[0].message.content
 
         return output_text
